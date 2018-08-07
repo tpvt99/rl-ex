@@ -100,7 +100,7 @@ def update_state_value():
                     reward += action_probs[action] * (rewards[i][j][action] + DISCOUNT * state_values[new_position[0], new_position[1]])
                 new_state_values[i][j] = reward
 
-        if np.sum(abs(new_state_values - state_values)) < 1e-4:
+        if np.sum(abs(new_state_values - state_values)) < 1e-10:
             draw_image(np.round(new_state_values, decimals = 1))
             break
         state_values = np.copy(new_state_values)
