@@ -88,9 +88,10 @@ def draw_image(image):
     ax.add_table(tb)
     plt.show()
 
+# figure 3.2
 def update_state_value():
     state_values = np.zeros((WORLD_SPACE, WORLD_SPACE))
-    new_state_values = np.copy(state_values)
+    new_state_values = np.zeros((WORLD_SPACE, WORLD_SPACE))
     while True:
         for i in range(WORLD_SPACE):
             for j in range(WORLD_SPACE):
@@ -105,5 +106,24 @@ def update_state_value():
             break
         state_values = np.copy(new_state_values)
 
+# figure 3.5
+def optimal_state_value():
+  state_values = np.zeros((WORLD_SPACE, WORLD_SPACE))
+  new_state_values = np.zeros((WORLD_SPACE, WORLD_SPACE))
+  while True:
+    for i in range(WORLD_SPACE):
+      for j in range(WORLD_SPACE):
+        values = []
+        for action in action_probs.keys():
+          new_position = positions[i][j][action]
+          values.append(rewards[i][j][action] + DISCOUNT * state_values[new_position[0], new_position[1]])
+        new_state_values[i][j] = np.max(values)
+
+    if np.sum(abs(new_state_values - state_values)) < 1e-4:
+      draw_image(np.round(new_state_values, decimals = 2))
+      break
+
+    state_values = np.copy(new_state_values)
+
 if __name__ == "__main__":
-    update_state_value()
+    optimal_state_value()
